@@ -1,6 +1,6 @@
 const path = require('path')
+require("../config/index");
 
-// const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {
@@ -15,7 +15,7 @@ module.exports = {
     entry: resolve('../src/main.js'),
     output: {
         path: resolve('../dist'),
-        filename: 'js/[name].[hash:8].bundle.js'
+        filename: 'js/[name]-[hash:8]-bundle.js'
     },
     module: {
         rules: [{
@@ -37,6 +37,7 @@ module.exports = {
         }
     },
     plugins: [
+        // html模板
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './src/template/index.html',
@@ -46,20 +47,17 @@ module.exports = {
                 caseSensitive: false,
                 //是否简写boolean格式的属性如：disabled="disabled" 简写为disabled  默认false
                 collapseBooleanAttributes: true,
-                //是否去除空格，默认false
-                collapseWhitespace: true,
                 //是否压缩html里的css（使用clean-css进行的压缩） 默认值false；
-                minifyCSS: true,
+                minifyCSS: false,
                 //是否压缩html里的js（使用uglify-js进行的压缩）
-                minifyJS: true,
-                //是否移除注释 默认false
-                removeComments: true, //从脚本和样式删除的注释 默认false
+                minifyJS: false,
                 removeCommentsFromCDATA: true
             }
         }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['./dist']
         }),
+        //静态资源输出
         new CopyWebpackPlugin([{
             from: __dirname + '/..' + '/src/assets', // 定义要拷贝的源文件路劲
             to: __dirname + '/..' + '/dist/assets', // 打包到到那个文件夹
